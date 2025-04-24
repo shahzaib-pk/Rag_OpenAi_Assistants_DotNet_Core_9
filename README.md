@@ -92,7 +92,7 @@ Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) fo
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
-For questions or feedback, open an issue on the [GitHub repository](https://github.com/shahzaib-pk/OpenAiRag) or contact [shahzaibrind6@gmail.com](mailto:shahzaibrind6@gmail.com).
+For questions or feedback, open an issue on the [GitHub repository](https://github.com/shahzaib-pk/Rag_OpenAi_Assistants_DotNet_Core_9) or contact [shahzaibrind6@gmail.com](mailto:shahzaibrind6@gmail.com).
 
 ---
 
