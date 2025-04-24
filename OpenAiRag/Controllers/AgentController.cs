@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OpenAiRag.Dto;
 using OpenAI.Assistants;
 using OpenAI;
+using System.Text.Json;
 
 namespace OpenAiRag.Controllers;
 
@@ -54,6 +55,32 @@ public class AgentController : ControllerBase
 
         while (!threadRun.Value.Status.IsTerminal)
         {
+            if (threadRun.Value.Status == RunStatus.RequiresAction)
+                foreach (var action in threadRun.Value.RequiredActions)
+                    switch (action.FunctionName)
+                    {
+                        case nameof(GetWeatherInCelcius):
+                            using (JsonDocument argumentsJson = JsonDocument.Parse(action.FunctionArguments))
+                            {
+                                bool hasCityArgument = argumentsJson.RootElement.TryGetProperty("city", out JsonElement city);
+
+                                if (!hasCityArgument)
+                                    throw new ArgumentNullException(nameof(city), "City is required.");
+
+                                var events = await GetWeatherInCelcius(city.ToString());
+
+                                threadRun = await _assistantClient.SubmitToolOutputsToRunAsync(threadRun.Value.ThreadId, threadRun.Value.Id,
+                                [
+                                    new ToolOutput
+                                    {
+                                        ToolCallId = action.ToolCallId,
+                                        Output = events,
+                                    }
+                                ]);
+                            }
+                            break;
+                    }
+
             await Task.Delay(500);
             threadRun = _assistantClient.GetRun(threadRun.Value.ThreadId, threadRun.Value.Id);
         }
@@ -73,4 +100,13 @@ public class AgentController : ControllerBase
 
         return (responseText, threadRun.Value.ThreadId);
     }
+
+    private Task<string> GetWeatherInCelcius(string city)
+        => Task.FromResult(city switch
+        {
+            "Karachi" => "20C",
+            "Lahore" => "30C",
+            "Islamabad" => "25C",
+            _ => "28C",
+        });
 }
