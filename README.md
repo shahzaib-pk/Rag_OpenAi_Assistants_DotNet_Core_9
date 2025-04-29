@@ -86,7 +86,7 @@
 - **LICENSE**: MIT License for open-source usage.
 
 ## Contributing
-Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute, including our use of [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
+Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
